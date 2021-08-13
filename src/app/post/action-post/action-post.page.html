@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+
+  <ion-buttons slot="start">
+    <ion-button (click)="modalController.dismiss()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+    <ion-title *ngIf="data == ''">Agregar Post</ion-title>
+    <ion-title *ngIf="data != ''">Editar Post</ion-title>
+
+  <ion-buttons slot="end">
+    <ion-button>
+      Guardar
+    </ion-button>
+  </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-item>
+        <ion-input placeholder="Titulo" name="title" [(ngModel)]="post.title"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-textarea placeholder="Descripcion" name="description" [(ngModel)]="post.description"></ion-textarea>
+    </ion-item>
+  </form>
+</ion-content>
