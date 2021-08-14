@@ -2,19 +2,25 @@ import { Component, ViewChild } from '@angular/core';
 import { IonList, ModalController } from '@ionic/angular';
 import { ActionPostPage } from '../action-post/action-post.page';
 import { ViewPostPage } from '../view-post/view-post.page';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-list-post',
   templateUrl: './list-post.page.html',
-  styleUrls: ['./list-post.page.scss'],
 })
 export class ListPostPage {
 
   @ViewChild('list') list: IonList;
+  posts:any = [];
 
   constructor(
-    public modalController: ModalController
-  ) { }
+    public modalController: ModalController,
+    private _postService: PostService
+  ) { 
+    this._postService.getAllPost().subscribe( data =>{
+      this.posts = data;
+    });
+  }
 
   async viewPost( data ){
     const modal = await this.modalController.create({

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { PostModule } from 'src/app/post/post.module';
+
 
 const routes: Routes = [
   {
@@ -8,18 +10,14 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'list-post',
-        loadChildren: () => import('../post/list-post/list-post.module').then(m => m.ListPostPageModule)
-      },
-      {
-        path: 'favorite-posts',
-        loadChildren: () => import('../post/list-post/list-post.module').then(m => m.ListPostPageModule)
-      } 
+        path: 'post',
+        loadChildren: () => PostModule
+      }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/list-post',
+    redirectTo: '/tabs/post/list',
     pathMatch: 'full'
   }
 ];
