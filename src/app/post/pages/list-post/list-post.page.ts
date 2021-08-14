@@ -1,33 +1,45 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonList, ModalController } from '@ionic/angular';
+
 import { ActionPostPage } from '../action-post/action-post.page';
 import { ViewPostPage } from '../view-post/view-post.page';
+
 import { PostService } from '../../services/post.service';
+import { IonLoaderService } from '../../../core/services/ion-loader.service';
+
+import { Post } from '../../models/post.interface';
+
 
 @Component({
   selector: 'app-list-post',
   templateUrl: './list-post.page.html',
 })
-export class ListPostPage {
+export class ListPostPage  {
 
   @ViewChild('list') list: IonList;
-  posts:any = [];
+  posts:Post[];
 
   constructor(
     public modalController: ModalController,
-    private _postService: PostService
+    private _postService: PostService,
+    private _ionLoaderService:IonLoaderService
   ) { 
-    this._postService.getAllPost().subscribe( data =>{
-      this.posts = data;
+    this._ionLoaderService.loader("Cargando ...").then(()=>{
+      this._postService.getAllPosts().subscribe( data =>{
+        this.posts = data;
+        this._ionLoaderService.loading.dismiss();
+      });  
     });
   }
 
-  async viewPost( data ){
+  async viewPost( post:Post ){
+    const { id,userId} = post;
     const modal = await this.modalController.create({
       component: ViewPostPage,
-      id: 'modal_post',
+      id: 'view_post',
       componentProps: {
-        'data': data
+        'idPost': id,
+        'idUser': userId
       }
     });
 
@@ -39,7 +51,7 @@ export class ListPostPage {
   async editPost( data ){
     const modal = await this.modalController.create({
       component: ActionPostPage,
-      id: 'modal_post',
+      id: 'edit_post',
       componentProps: {
         'data': data
       }

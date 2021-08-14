@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 
-import { Post } from '../models/post.interface';
+import { User } from '../models/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PostService {
+export class UserService {
 
   private urlApi = environment.urlApi;
 
@@ -16,12 +16,8 @@ export class PostService {
     private http: HttpClient
   ) { }
 
-  getAllPosts(){
-    return this.http.get<Post>(`${this.urlApi}posts`);
-  }
-
-  getPost( id:number ){
-    return this.http.get<Post>(`${this.urlApi}posts/${id}`);
+  getUser( id:number ){
+     return this.http.get<User>(`${this.urlApi}users/${id}`);
   }
 
 }

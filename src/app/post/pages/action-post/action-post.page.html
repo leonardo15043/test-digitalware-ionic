@@ -1,21 +1,17 @@
 <ion-header>
   <ion-toolbar>
-
-  <ion-buttons slot="start">
-    <ion-button (click)="modalController.dismiss()">
-      <ion-icon name="arrow-back"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-
-    <ion-title *ngIf="data == ''">Agregar Post</ion-title>
-    <ion-title *ngIf="data != ''">Editar Post</ion-title>
-
-  <ion-buttons slot="end">
-    <ion-button>
-      Guardar
-    </ion-button>
-  </ion-buttons>
-
+    <ion-buttons slot="start">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+      <ion-title *ngIf="data == ''">Agregar Post</ion-title>
+      <ion-title *ngIf="data != ''">Editar Post</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        Guardar
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
