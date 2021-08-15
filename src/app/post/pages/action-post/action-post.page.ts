@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
@@ -12,7 +12,7 @@ import { AlertModule } from '../../../core/modules/toast/alert.module';
   selector: 'app-action-post',
   templateUrl: './action-post.page.html',
 })
-export class ActionPostPage implements OnInit {
+export class ActionPostPage {
 
   @Input() post:Post;
   @Input() type:String;
@@ -22,9 +22,6 @@ export class ActionPostPage implements OnInit {
     public alertModule:AlertModule,
     private _postService: PostService,
   ) { }
-
-  ngOnInit() {
-  }
 
    save( form:NgForm){
 
@@ -37,9 +34,11 @@ export class ActionPostPage implements OnInit {
       });
     }else if(this.type == 'add'){
       this._postService.addPost(form.value).subscribe((data)=>{
+        console.log(form.value);
         this.post.push(data);
         this.modalController.dismiss();
         this.alertModule.toast("Datos agregados correctamente.",3000,"dark");
+        form.resetForm();
       }, (err)=>{
         this.alertModule.toast("Ocurrio un error , intente más tarde.",3000,"danger");
       });

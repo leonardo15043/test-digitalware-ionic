@@ -20,6 +20,8 @@
     <ion-item>
         <ion-input placeholder="Titulo" type="text" name="title" [(ngModel)]="post.title" required></ion-input>
         <ion-input type="hidden" name="id" [(ngModel)]="post.id" *ngIf="type == 'edit'"></ion-input>
+        <ion-input type="hidden" name="favorite" [(ngModel)]="post.favorite" ></ion-input>
+        <ion-icon name="star" slot="end" (click)="post.favorite = !post.favorite" [ngClass]="{'active-fav': post.favorite  === true}"></ion-icon>
     </ion-item>
     <ion-item>
         <ion-textarea placeholder="Descripcion" name="body" [(ngModel)]="post.body" class="medium-large" required></ion-textarea>

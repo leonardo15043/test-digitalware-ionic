@@ -10,6 +10,10 @@ const routes: Routes = [
         component: ListPostPage
       },
       {
+        path: 'list/:favorites',
+        component: ListPostPage
+      },
+      {
         path: 'actions',
         component: ActionPostPage
       },

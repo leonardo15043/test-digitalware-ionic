@@ -3,4 +3,6 @@ export interface Post  extends Array<Post>{
     id:     number;
     title:  string;
     body:   string;
+    favorite: boolean;
+    view: boolean;
 }

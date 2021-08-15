@@ -9,6 +9,7 @@ import { IonLoaderService } from '../../../core/services/ion-loader.service';
 
 import { Post } from '../../models/post.interface';
 import { AlertModule } from 'src/app/core/modules/toast/alert.module';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -25,16 +26,27 @@ export class ListPostPage  {
     private _postService: PostService,
     private _ionLoaderService:IonLoaderService,
     public alertModule:AlertModule,
+    private activatedRoute:ActivatedRoute,
   ) { 
-    this._ionLoaderService.loader("Cargando ...").then(()=>{
-      this._postService.getAllPosts().subscribe( data =>{
-        this.posts = data;
-        this._ionLoaderService.loading.dismiss();
-      });  
+
+    this.activatedRoute.params.subscribe((params)=>{
+      if(params.hasOwnProperty("favorites")){
+          
+      }else{
+        this._ionLoaderService.loader("Cargando ...").then(()=>{
+          this._postService.getAllPosts().subscribe( data =>{
+            this.posts = data;
+            
+            this._ionLoaderService.loading.dismiss();
+          });  
+        });
+      }
     });
+   
   }
 
   async viewPost( post:Post ){
+    post.view = true
     const { id,userId } = post;
     const modal = await this.modalController.create({
       component: ViewPostPage,
@@ -80,6 +92,11 @@ export class ListPostPage  {
 
     }
     
+  }
+
+  updateFavorite( post:Post){
+      post.favorite = !post.favorite;
+      this._postService.editPost(post);
   }
 
 }
