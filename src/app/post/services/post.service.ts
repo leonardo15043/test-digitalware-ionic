@@ -24,4 +24,16 @@ export class PostService {
     return this.http.get<Post>(`${this.urlApi}posts/${id}`);
   }
 
+  editPost( post:Post ){
+    return this.http.put<Post>(`${this.urlApi}posts/${post.id}`,post);
+  }
+
+  addPost( post:Post ){
+    return this.http.post<Post>(`${this.urlApi}posts`,post);
+  }
+
+  deletePost( id:number ){
+    return this.http.delete<Post>(`${this.urlApi}posts/${id}`);
+  }
+
 }

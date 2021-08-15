@@ -7,6 +7,7 @@ import { ListPostPage } from './pages/list-post/list-post.page';
 import { ActionPostPage } from './pages/action-post/action-post.page';
 
 import { PostPageRoutingModule } from './post-routing.module';
+import { AlertModule } from '../core/modules/toast/alert.module';
 
 @NgModule({
   
@@ -14,7 +15,8 @@ import { PostPageRoutingModule } from './post-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    PostPageRoutingModule
+    PostPageRoutingModule,
+    AlertModule
   ],
   declarations: [ViewPostPage,ListPostPage,ActionPostPage]
 })

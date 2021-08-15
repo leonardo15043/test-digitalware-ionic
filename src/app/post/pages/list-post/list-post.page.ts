@@ -8,6 +8,7 @@ import { PostService } from '../../services/post.service';
 import { IonLoaderService } from '../../../core/services/ion-loader.service';
 
 import { Post } from '../../models/post.interface';
+import { AlertModule } from 'src/app/core/modules/toast/alert.module';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class ListPostPage  {
   constructor(
     public modalController: ModalController,
     private _postService: PostService,
-    private _ionLoaderService:IonLoaderService
+    private _ionLoaderService:IonLoaderService,
+    public alertModule:AlertModule,
   ) { 
     this._ionLoaderService.loader("Cargando ...").then(()=>{
       this._postService.getAllPosts().subscribe( data =>{
@@ -33,7 +35,7 @@ export class ListPostPage  {
   }
 
   async viewPost( post:Post ){
-    const { id,userId} = post;
+    const { id,userId } = post;
     const modal = await this.modalController.create({
       component: ViewPostPage,
       id: 'view_post',
@@ -48,26 +50,36 @@ export class ListPostPage  {
     return await modal.present();
   }
 
-  async editPost( data ){
-    const modal = await this.modalController.create({
-      component: ActionPostPage,
-      id: 'edit_post',
-      componentProps: {
-        'data': data
-      }
-    });
+  async actionPost( data ,type ){
 
-    this.list.closeSlidingItems();
+    if(type != "delete"){
 
-    return await modal.present();
-  }
+      const modal = await this.modalController.create({
+        component: ActionPostPage,
+        id: 'action_post',
+        componentProps: {
+          'post': data,
+          'type':type
+        }
+      });
+  
+      this.list.closeSlidingItems();
+      return await modal.present();
 
-  detailPost(){
+    }else{
+
+      const { id } = data.post;
+      const { index } = data;
+
+      this._postService.deletePost(id).subscribe((data)=>{
+        delete this.posts[index];
+        this.alertModule.toast("Post Eliminado correctamente",3000,"dark");
+      },(err)=>{
+        this.alertModule.toast("Ocurrio un error , intente más tarde.",3000,"danger");
+      });
+
+    }
     
-  }
-
-  deletePost(){
-
   }
 
 }
