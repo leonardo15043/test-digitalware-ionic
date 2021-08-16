@@ -16,7 +16,7 @@ export class CommentService {
     private http: HttpClient
   ) { }
 
-  getAllComments( id ){
+  getAllComments( id:number ){
     return this.http.get<Comment>(`${this.urlApi}posts/${id}/comments`);
   }
 

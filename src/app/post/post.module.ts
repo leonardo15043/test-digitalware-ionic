@@ -20,4 +20,9 @@ import { AlertModule } from '../core/modules/toast/alert.module';
   ],
   declarations: [ViewPostPage,ListPostPage,ActionPostPage]
 })
-export class PostModule { }
+export class PostModule { 
+
+  constructor(
+  ){
+  }
+}

@@ -27,6 +27,9 @@ export class ActionPostPage {
 
     if(this.type == 'edit'){
       this._postService.editPost(form.value).subscribe((data)=>{
+        if(data.favorite == true){
+          this._postService.updateSQLPost(data);
+        }
         this.modalController.dismiss();
         this.alertModule.toast("Datos editados correctamente.",3000,"dark");
       },(err)=>{
@@ -34,8 +37,10 @@ export class ActionPostPage {
       });
     }else if(this.type == 'add'){
       this._postService.addPost(form.value).subscribe((data)=>{
-        console.log(form.value);
         this.post.push(data);
+        if(data.favorite == true){
+          this._postService.insertSQLPost(data);
+        }
         this.modalController.dismiss();
         this.alertModule.toast("Datos agregados correctamente.",3000,"dark");
         form.resetForm();

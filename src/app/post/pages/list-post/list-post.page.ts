@@ -10,6 +10,7 @@ import { IonLoaderService } from '../../../core/services/ion-loader.service';
 import { Post } from '../../models/post.interface';
 import { AlertModule } from 'src/app/core/modules/toast/alert.module';
 import { ActivatedRoute } from '@angular/router';
+import { DbService } from 'src/app/core/services/db.service';
 
 
 @Component({
@@ -27,19 +28,33 @@ export class ListPostPage  {
     private _ionLoaderService:IonLoaderService,
     public alertModule:AlertModule,
     private activatedRoute:ActivatedRoute,
+    public database:DbService 
   ) { 
-
+  
     this.activatedRoute.params.subscribe((params)=>{
       if(params.hasOwnProperty("favorites")){
           
+          this._postService.getfavoriteSQLPost().then((resp)=>{
+            this.posts = [];
+            if(resp.rows.length > 0){
+              for (let i = 0; i < resp.rows.length; i++) {
+                resp.rows.item(i).favorite = Boolean(resp.rows.item(i));
+                this.posts.push(resp.rows.item(i));
+              }
+            }
+          },(err) => {
+            this.alertModule.toast(JSON.stringify(err),7000,"danger");
+          });
+
       }else{
-        this._ionLoaderService.loader("Cargando ...").then(()=>{
-          this._postService.getAllPosts().subscribe( data =>{
-            this.posts = data;
-            
-            this._ionLoaderService.loading.dismiss();
-          });  
-        });
+
+          this._ionLoaderService.loader("Cargando ...").then(()=>{
+            this._postService.getAllPosts().subscribe( data =>{
+              this.posts = data;  
+              this._ionLoaderService.loading.dismiss();
+            });  
+          });
+
       }
     });
    
@@ -58,7 +73,6 @@ export class ListPostPage  {
     });
 
     this.list.closeSlidingItems();
-
     return await modal.present();
   }
 
@@ -96,7 +110,17 @@ export class ListPostPage  {
 
   updateFavorite( post:Post){
       post.favorite = !post.favorite;
-      this._postService.editPost(post);
-  }
+      this._postService.editPost(post).subscribe((data)=>{
+      
+        this._postService.getSQLPost(post.id).then((pt)=>{
+          if(pt.rows.item(0)){
+            this._postService.updateSQLPost(data);
+          }else{
+            this._postService.insertSQLPost(data);
+          }
+        });
+  
+      });
+  } 
 
 }
